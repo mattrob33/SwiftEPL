@@ -7,16 +7,16 @@
 
 import Foundation
 
-public struct TeamEntry {
+public struct Team {
     
     var id: Int
     var name: String
-    var crestUrl: String
+    var crest: String
 
-    public init(id: Int, name: String, crestUrl: String) {
+    public init(id: Int, name: String, crest: String) {
         self.id = id
         self.name = name
-        self.crestUrl = crestUrl
+        self.crest = crest
     }
     
 }

@@ -127,7 +127,7 @@ struct SmallRedText: View {
 
 struct SmallText: View {
     var text: String
-    var color: Color = Color(.black)
+    var color: Color?
     
     var body: some View {
         Text(text)

@@ -23,7 +23,7 @@ struct ContentView: View {
     }
 
     func loadData() {
-        ApiService().getStandings() { standingsResponse in
+        FootballApiService().getStandings() { standingsResponse in
             standings = standingsResponse
         }
     }
