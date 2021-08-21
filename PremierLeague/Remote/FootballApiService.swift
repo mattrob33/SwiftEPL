@@ -35,7 +35,7 @@ class FootballApiService {
     //
     // Get all matches for the given team
     //
-    func getMatches(forTeam: String, result: @escaping ([Match]) -> () ) {
+    func getMatches(forTeam: Int, result: @escaping ([Match]) -> Void ) {
 
         let url = "\(baseUrl)teams/\(forTeam)/matches"
 

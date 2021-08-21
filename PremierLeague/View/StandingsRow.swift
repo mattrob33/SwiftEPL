@@ -53,7 +53,7 @@ struct PointsText: View {
     }
 }
 
-struct Crest: View {
+fileprivate struct Crest: View {
     
     var imageName: String
     
