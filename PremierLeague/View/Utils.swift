@@ -13,12 +13,28 @@ func getCrestImageName(_ url: String) -> String {
                 .replacingOccurrences(of: ".svg", with: "")
 }
 
+func mapTeamCrest(teamId: Int) -> String {
+    switch teamId {
+        // Only Norwich has an svg name other than their team id for some reason (from the API)
+        case 68:
+            return "Norwich_City"
+        default:
+            return "\(teamId)"
+    }
+}
+
+func mapTeamEntryToTeam(_ teamEntry: TeamEntry) -> Team {
+    return Team(
+        id: teamEntry.id,
+        name: teamEntry.name,
+        crest: mapTeamCrest(teamId: teamEntry.id)
+    )
+}
+
 func getDateString(_ isoDate: String) -> String {
     
     let formatter = ISO8601DateFormatter()
-    
-//    "2021-08-13T19:00:00Z"
-    
+
     formatter.formatOptions = [.withFullDate, .withFullTime, .withTimeZone]
     
     guard let date = formatter.date(from: isoDate) else { return "no date" }

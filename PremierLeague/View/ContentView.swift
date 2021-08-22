@@ -11,19 +11,38 @@ import CoreData
 struct ContentView: View {
 
     @State var standings: [StandingsEntry] = []
+    @State var myTeamId: Int = -1
+    
+    @State private var isLoading: Bool = true
 
     var body: some View {
         NavigationView {
-            List(standings, id: \.position) { entry in
-                StandingsRow(entry: entry)
+            ZStack {
+                
+                List(standings, id: \.position) { entry in
+                    NavigationLink(
+                        destination: MatchesView(
+                            team: mapTeamEntryToTeam(entry.team)
+                        )
+                    ) {
+                        StandingsRow(entry: entry)
+                    }
+                }
+                .navigationTitle("Standings")
+                .onAppear(perform: loadData)
+                
+                if isLoading {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding()
+                }
             }
-            .navigationTitle("Standings")
-            .onAppear(perform: loadData)
         }
     }
 
     func loadData() {
         FootballApiService().getStandings() { standingsResponse in
+            isLoading = false
             standings = standingsResponse
         }
     }

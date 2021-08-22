@@ -10,18 +10,20 @@ import Foundation
 struct Match {
     
     var id: Int
+    var status: MatchStatus
     var date: String
     var matchday: Int
     
     var homeTeam: Team
     var awayTeam: Team
 
-    var winner: MatchTeam
+    var winner: MatchTeam?
     var homeScore: Int
     var awayScore: Int
-    
-    init(id: Int, date: String, matchday: Int, winner: MatchTeam, homeScore: Int, awayScore: Int, homeTeam: Team, awayTeam: Team) {
+
+    init(id: Int, status: MatchStatus, date: String, matchday: Int, winner: MatchTeam?, homeScore: Int, awayScore: Int, homeTeam: Team, awayTeam: Team) {
         self.id = id
+        self.status = status
         self.date = date
         self.matchday = matchday
         self.winner = winner

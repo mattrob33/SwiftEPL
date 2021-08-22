@@ -5,6 +5,7 @@ fileprivate struct RawServerMatchesResponse: Decodable {
     struct RawMatch: Decodable {
         var id: Int
         var utcDate: String
+        var status: String
         var matchday: Int
 
         var score: RawScore
@@ -13,18 +14,18 @@ fileprivate struct RawServerMatchesResponse: Decodable {
         var awayTeam: RawTeam
         
         enum CodingKeys: String, CodingKey {
-            case id, utcDate, matchday, score, homeTeam, awayTeam
+            case id, utcDate, status, matchday, score, homeTeam, awayTeam
         }
     }
 
     struct RawScore: Decodable {
-        var winner: String
-        var score: RawScoreFullTime
+        var winner: String?
+        var fullTime: RawScoreFullTime
     }
     
     struct RawScoreFullTime: Decodable {
-        var homeTeam: Int
-        var awayTeam: Int
+        var homeTeam: Int?
+        var awayTeam: Int?
     }
     
     struct RawTeam: Decodable {
@@ -51,20 +52,21 @@ public struct MatchesResponse: Decodable {
             matches.append(
                 Match(
                     id: match.id,
+                    status: mapMatchStatus(match.status),
                     date: match.utcDate,
                     matchday: match.matchday,
-                    winner: getMatchTeam(match.score.winner),
-                    homeScore: match.score.score.homeTeam,
-                    awayScore: match.score.score.awayTeam,
+                    winner: mapMatchTeam(match.score.winner),
+                    homeScore: match.score.fullTime.homeTeam ?? 0,
+                    awayScore: match.score.fullTime.awayTeam ?? 0,
                     homeTeam: Team(
                         id: match.homeTeam.id,
                         name: match.homeTeam.name,
-                        crest: "\(match.homeTeam.id)"
+                        crest: mapTeamCrest(teamId: match.homeTeam.id)
                     ),
                     awayTeam: Team(
                         id: match.awayTeam.id,
                         name: match.awayTeam.name,
-                        crest: "\(match.awayTeam.id)"
+                        crest: mapTeamCrest(teamId: match.awayTeam.id)
                     )
                 )
             )
@@ -72,11 +74,23 @@ public struct MatchesResponse: Decodable {
     }
 }
 
-private func getMatchTeam(_ raw: String) -> MatchTeam {
+private func mapMatchTeam(_ raw: String?) -> MatchTeam? {
+    guard let raw = raw else { return nil }
+
     switch raw {
         case "HOME_TEAM":
             return MatchTeam.home
         default:
             return MatchTeam.away
+    }
+}
+
+
+private func mapMatchStatus(_ raw: String) -> MatchStatus {
+    switch raw {
+        case "FINISHED":
+            return MatchStatus.completed
+        default:
+            return MatchStatus.scheduled
     }
 }
