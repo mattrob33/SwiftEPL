@@ -56,8 +56,16 @@ public struct MatchesResponse: Decodable {
                     winner: getMatchTeam(match.score.winner),
                     homeScore: match.score.score.homeTeam,
                     awayScore: match.score.score.awayTeam,
-                    homeTeam: Team(id: match.homeTeam.id, name: match.homeTeam.name, crest: "\(match.homeTeam.id)"),
-                    awayTeam: Team(id: match.awayTeam.id, name: match.awayTeam.name, crest: "\(match.awayTeam.id)")
+                    homeTeam: Team(
+                        id: match.homeTeam.id,
+                        name: match.homeTeam.name,
+                        crest: "\(match.homeTeam.id)"
+                    ),
+                    awayTeam: Team(
+                        id: match.awayTeam.id,
+                        name: match.awayTeam.name,
+                        crest: "\(match.awayTeam.id)"
+                    )
                 )
             )
         }
